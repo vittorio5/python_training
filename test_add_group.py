@@ -10,19 +10,13 @@ class TestAddGroup():
         self.vars = {}
 
     def test_add_group(self):
-        self.open_home_page()
         self.login(username="admin", password="secret")
-        self.open_groups_page()
         self.create_group(Group(name="qwerty", header="qwertyu", footer="qwertyui"))
-        self.return_to_groups_page()
         self.logout()
 
     def test_add_empty_group(self):
-        self.open_home_page()
         self.login(username="admin", password="secret")
-        self.open_groups_page()
         self.create_group(Group(name="", header="", footer=""))
-        self.return_to_groups_page()
         self.logout()
 
     def logout(self):
@@ -32,6 +26,7 @@ class TestAddGroup():
         self.driver.find_element(By.LINK_TEXT, "groups").click()
 
     def create_group(self, group):
+        self.open_groups_page()
         # init group selection
         self.driver.find_element(By.NAME, "new").click()
         # fill group name
@@ -43,11 +38,13 @@ class TestAddGroup():
         self.driver.find_element(By.NAME, "group_footer").send_keys(group.footer)
         # submit group creation
         self.driver.find_element(By.NAME, "submit").click()
+        self.return_to_groups_page()
 
     def open_groups_page(self):
         self.driver.find_element(By.LINK_TEXT, "groups").click()
 
     def login(self, username, password):
+        self.open_home_page()
         self.driver.find_element(By.NAME, "user").click()
         self.driver.find_element(By.NAME, "user").send_keys(username)
         self.driver.find_element(By.NAME, "pass").click()
